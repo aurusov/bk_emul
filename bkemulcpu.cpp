@@ -14,7 +14,7 @@ using namespace bkemul;
 // --------------------------------------------------------------
 // ---------- BKEmulCPU
 // --------------------------------------------------------------
-#define BK_3bits_Mask ((WORD)0x0007)  // Маска для выделения трех младших бит,
+#define BK_3bits_Mask ((WORD)0x0007)  // РњР°СЃРєР° РґР»СЏ РІС‹РґРµР»РµРЅРёСЏ С‚СЂРµС… РјР»Р°РґС€РёС… Р±РёС‚,
 
 #define Check_FN_word(A)        (static_cast<WORD>(A) & 0x8000 ? true : false)
 #define Check_FZ_word(A)        (static_cast<WORD>(A) == 0     ? true : false)
@@ -22,14 +22,14 @@ using namespace bkemul;
 #define Check_FZ_byte(A)        (static_cast<BYTE>(A) == 0     ? true : false)
 #define XOR(A, B)               ((A && !B) || (!A && B))
 
-#define R0   regs[0] // Регистр R0
-#define R1   regs[1] // Регистр R1
-#define R2   regs[2] // Регистр R2
-#define R3   regs[3] // Регистр R3
-#define R4   regs[4] // Регистр R4
-#define R5   regs[5] // Регистр R5
-#define R6   regs[6] // Регистр R6 или SP- указатель стека
-#define R7   regs[7] // Регистр R7 или PC - счетчик команд
+#define R0   regs[0] // Р РµРіРёСЃС‚СЂ R0
+#define R1   regs[1] // Р РµРіРёСЃС‚СЂ R1
+#define R2   regs[2] // Р РµРіРёСЃС‚СЂ R2
+#define R3   regs[3] // Р РµРіРёСЃС‚СЂ R3
+#define R4   regs[4] // Р РµРіРёСЃС‚СЂ R4
+#define R5   regs[5] // Р РµРіРёСЃС‚СЂ R5
+#define R6   regs[6] // Р РµРіРёСЃС‚СЂ R6 РёР»Рё SP- СѓРєР°Р·Р°С‚РµР»СЊ СЃС‚РµРєР°
+#define R7   regs[7] // Р РµРіРёСЃС‚СЂ R7 РёР»Рё PC - СЃС‡РµС‚С‡РёРє РєРѕРјР°РЅРґ
 
 BKEmulCPU::BKEmulCPU()
 {
@@ -167,24 +167,24 @@ void BKEmulCPU::nextIteration()
 {
 	emul.timer.tick();
 
-	// Прерывание по нажатию на клавишу СТОП или по зависанию канала
+	// РџСЂРµСЂС‹РІР°РЅРёРµ РїРѕ РЅР°Р¶Р°С‚РёСЋ РЅР° РєР»Р°РІРёС€Сѓ РЎРўРћРџ РёР»Рё РїРѕ Р·Р°РІРёСЃР°РЅРёСЋ РєР°РЅР°Р»Р°
 	if ( PR_4 ) {
 		BK_doHALT();
 		return;
 	}
-	// Прерывание с клавиатуры
+	// РџСЂРµСЂС‹РІР°РЅРёРµ СЃ РєР»Р°РІРёР°С‚СѓСЂС‹
 	if ( PR_60 ) {
 		PR_60 = false;
 		interrupt( 060 );
 		return;
 	}
-	// Прерывание по таймеру (IRQ2)
+	// РџСЂРµСЂС‹РІР°РЅРёРµ РїРѕ С‚Р°Р№РјРµСЂСѓ (IRQ2)
 	if ( PR_100 ) {
 		PR_100 = false;
 		interrupt( 0100 );
 		return;
 	}
-	// Прерывание с клавиатуры
+	// РџСЂРµСЂС‹РІР°РЅРёРµ СЃ РєР»Р°РІРёР°С‚СѓСЂС‹
 	if ( PR_274 ) {
 		PR_274 = false;
 		interrupt( 0274 );
@@ -198,13 +198,13 @@ void BKEmulCPU::nextIteration()
 	(this->*doCommandGroup_0[commandID])();
 }
 
-// Определение приемника-байта перед выполнением команды
+// РћРїСЂРµРґРµР»РµРЅРёРµ РїСЂРёРµРјРЅРёРєР°-Р±Р°Р№С‚Р° РїРµСЂРµРґ РІС‹РїРѕР»РЅРµРЅРёРµРј РєРѕРјР°РЅРґС‹
 void BKEmulCPU::Command_dest_Parser_byte()
 {
-	// Индекс регистра приемника
+	// РРЅРґРµРєСЃ СЂРµРіРёСЃС‚СЂР° РїСЂРёРµРјРЅРёРєР°
 	dest_reg_id = command;
 	dest_reg_id &= BK_3bits_Mask;
-	// Режим адресации приемника
+	// Р РµР¶РёРј Р°РґСЂРµСЃР°С†РёРё РїСЂРёРµРјРЅРёРєР°
 	WORD dest_mode_id = command >> 3;
 	dest_mode_id &= BK_3bits_Mask;
 	is_dest_reg = false;
@@ -259,13 +259,13 @@ void BKEmulCPU::Command_dest_Parser_byte()
 	}
 }
 
-// Определение приемника-слова перед выполнением команды
+// РћРїСЂРµРґРµР»РµРЅРёРµ РїСЂРёРµРјРЅРёРєР°-СЃР»РѕРІР° РїРµСЂРµРґ РІС‹РїРѕР»РЅРµРЅРёРµРј РєРѕРјР°РЅРґС‹
 void BKEmulCPU::Command_dest_Parser_word()
 {
-	// Индекс регистра приемника
+	// РРЅРґРµРєСЃ СЂРµРіРёСЃС‚СЂР° РїСЂРёРµРјРЅРёРєР°
 	dest_reg_id = command;
 	dest_reg_id &= BK_3bits_Mask;
-	// Режим адресации приемника
+	// Р РµР¶РёРј Р°РґСЂРµСЃР°С†РёРё РїСЂРёРµРјРЅРёРєР°
 	WORD dest_mode_id = command >> 3;
 	dest_mode_id &= BK_3bits_Mask;
 	is_dest_reg = false;
@@ -317,20 +317,20 @@ void BKEmulCPU::Command_dest_Parser_word()
 				break;
 	}
 	// ????
-	// Общая часть для режимов адресации  1..7
+	// РћР±С‰Р°СЏ С‡Р°СЃС‚СЊ РґР»СЏ СЂРµР¶РёРјРѕРІ Р°РґСЂРµСЃР°С†РёРё  1..7
 //	if ( dest_mode_id ) {
 //		dest_adr &= oddWordMask;
 //	}
 }
 
-// Определение источника-байта и приемника-байта перед выполнением команды
+// РћРїСЂРµРґРµР»РµРЅРёРµ РёСЃС‚РѕС‡РЅРёРєР°-Р±Р°Р№С‚Р° Рё РїСЂРёРµРјРЅРёРєР°-Р±Р°Р№С‚Р° РїРµСЂРµРґ РІС‹РїРѕР»РЅРµРЅРёРµРј РєРѕРјР°РЅРґС‹
 void BKEmulCPU::CommandParser_byte()
 {
-	// Источник
-	// Индекс регистра источника - необходим для доступа к регистру через regs[]
+	// РСЃС‚РѕС‡РЅРёРє
+	// РРЅРґРµРєСЃ СЂРµРіРёСЃС‚СЂР° РёСЃС‚РѕС‡РЅРёРєР° - РЅРµРѕР±С…РѕРґРёРј РґР»СЏ РґРѕСЃС‚СѓРїР° Рє СЂРµРіРёСЃС‚СЂСѓ С‡РµСЂРµР· regs[]
 	WORD source_reg_id = command >> 6;
 	source_reg_id &= BK_3bits_Mask;
-	// Режим адресации источника
+	// Р РµР¶РёРј Р°РґСЂРµСЃР°С†РёРё РёСЃС‚РѕС‡РЅРёРєР°
 	WORD source_mode_id = command >> 9;
 	source_mode_id &= BK_3bits_Mask;
 	switch ( source_mode_id ) {
@@ -382,24 +382,24 @@ void BKEmulCPU::CommandParser_byte()
 				emul.timer.tick();
 				break;
 	}
-	// Общая часть для режимов адресации  1..7
+	// РћР±С‰Р°СЏ С‡Р°СЃС‚СЊ РґР»СЏ СЂРµР¶РёРјРѕРІ Р°РґСЂРµСЃР°С†РёРё  1..7
 	if ( source_mode_id ) {
 		source_data = emul.getMemoryByte( source_data );
 	}
 
 	source_data &= 0x00FF;
-	//Приемник
+	//РџСЂРёРµРјРЅРёРє
 	Command_dest_Parser_byte();
 }
 
-// Определение источника-слова и приемника-слова перед выполнением команды
+// РћРїСЂРµРґРµР»РµРЅРёРµ РёСЃС‚РѕС‡РЅРёРєР°-СЃР»РѕРІР° Рё РїСЂРёРµРјРЅРёРєР°-СЃР»РѕРІР° РїРµСЂРµРґ РІС‹РїРѕР»РЅРµРЅРёРµРј РєРѕРјР°РЅРґС‹
 void BKEmulCPU::CommandParser_word()
 {
-	// Источник
-	// Индекс регистра источника - необходим для доступа к регистру через regs[]
+	// РСЃС‚РѕС‡РЅРёРє
+	// РРЅРґРµРєСЃ СЂРµРіРёСЃС‚СЂР° РёСЃС‚РѕС‡РЅРёРєР° - РЅРµРѕР±С…РѕРґРёРј РґР»СЏ РґРѕСЃС‚СѓРїР° Рє СЂРµРіРёСЃС‚СЂСѓ С‡РµСЂРµР· regs[]
 	WORD source_reg_id = command >> 6;
 	source_reg_id &= BK_3bits_Mask;
-	// Режим адресации источника
+	// Р РµР¶РёРј Р°РґСЂРµСЃР°С†РёРё РёСЃС‚РѕС‡РЅРёРєР°
 	WORD source_mode_id = command >> 9;
 	source_mode_id &= BK_3bits_Mask;
 	switch ( source_mode_id ) {
@@ -449,12 +449,12 @@ void BKEmulCPU::CommandParser_word()
 				emul.timer.tick();
 				break;
 	}
-	// Общая часть для режимов адресации  1..7
+	// РћР±С‰Р°СЏ С‡Р°СЃС‚СЊ РґР»СЏ СЂРµР¶РёРјРѕРІ Р°РґСЂРµСЃР°С†РёРё  1..7
 	if ( source_mode_id ) {
 		source_data &= oddWordMask;
 		source_data = emul.getMemoryWord( source_data );
 	}
-	// Приемник
+	// РџСЂРёРµРјРЅРёРє
 	Command_dest_Parser_word();
 }
 
@@ -551,7 +551,7 @@ void BKEmulCPU::BK_doGroup_1()
 		}
 	} else if ( command < 0005000 ) {
 		if ( command < 0004000 ) {
-			// Переходы 0 000 nnn nxx xxx
+			// РџРµСЂРµС…РѕРґС‹ 0 000 nnn nxx xxx
 			short_jmp = command << 1;
 			short_jmp &= 0x01FE;
 			if ( short_jmp & 0x0100 ) {
@@ -652,7 +652,7 @@ void BKEmulCPU::BK_doGroup_2()
 void BKEmulCPU::BK_doGroup_3()
 {
 	if (command < 0105000) {
-		// Переходы 1 000 nnn nxx xxx, EMT, TRAP
+		// РџРµСЂРµС…РѕРґС‹ 1 000 nnn nxx xxx, EMT, TRAP
 		short_jmp = command << 1;
 		short_jmp &= 0x01FE;
 		if ( short_jmp & 0x0100 ) {
@@ -790,7 +790,7 @@ void BKEmulCPU::BK_doSWAB()
 {
 	Command_dest_Parser_word();
 	WORD data = GetDestData_word();
-	// ???? FN, FZ проверять по источнику или по результату
+	// ???? FN, FZ РїСЂРѕРІРµСЂСЏС‚СЊ РїРѕ РёСЃС‚РѕС‡РЅРёРєСѓ РёР»Рё РїРѕ СЂРµР·СѓР»СЊС‚Р°С‚Сѓ
 	FN = Check_FN_word( data );
 	BYTE b = data >> 8;
 	data = data << 8;
@@ -836,7 +836,7 @@ void BKEmulCPU::BK_doIOT()
 
 void BKEmulCPU::BK_doRESET()
 {
-	// Слово состояние процессора после включения питания должно быть 0340
+	// РЎР»РѕРІРѕ СЃРѕСЃС‚РѕСЏРЅРёРµ РїСЂРѕС†РµСЃСЃРѕСЂР° РїРѕСЃР»Рµ РІРєР»СЋС‡РµРЅРёСЏ РїРёС‚Р°РЅРёСЏ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0340
 	FC = FV = FZ = FN = FT = false;
 	FP1 = FP2 = FP3 = true;
 
@@ -979,7 +979,7 @@ void BKEmulCPU::BK_doINC()
 {
 	Command_dest_Parser_word();
 	WORD data = GetDestData_word();
-	// ???? FV проверять по источнику или по результату
+	// ???? FV РїСЂРѕРІРµСЂСЏС‚СЊ РїРѕ РёСЃС‚РѕС‡РЅРёРєСѓ РёР»Рё РїРѕ СЂРµР·СѓР»СЊС‚Р°С‚Сѓ
 	FV = data == 0077777;
 	data++;
 	SetDestData_word( data );
@@ -991,7 +991,7 @@ void BKEmulCPU::BK_doDEC()
 {
 	Command_dest_Parser_word();
 	WORD data = GetDestData_word();
-	// ???? FV проверять по источнику или по результату
+	// ???? FV РїСЂРѕРІРµСЂСЏС‚СЊ РїРѕ РёСЃС‚РѕС‡РЅРёРєСѓ РёР»Рё РїРѕ СЂРµР·СѓР»СЊС‚Р°С‚Сѓ
 	FV = data == 0100000;
 	data--;
 	SetDestData_word( data );
@@ -1007,7 +1007,7 @@ void BKEmulCPU::BK_doNEG()
 	SetDestData_word( data );
 	FN = Check_FN_word( data );
 	FZ = Check_FZ_word( data );
-	// ???? FV проверять по источнику или по результату
+	// ???? FV РїСЂРѕРІРµСЂСЏС‚СЊ РїРѕ РёСЃС‚РѕС‡РЅРёРєСѓ РёР»Рё РїРѕ СЂРµР·СѓР»СЊС‚Р°С‚Сѓ
 	FV = data == 0100000;
 	FC = data != 0;
 }
@@ -1256,7 +1256,7 @@ void BKEmulCPU::BK_doINCB()
 {
 	Command_dest_Parser_byte();
 	BYTE data = GetDestData_byte();
-	// ???? FV проверять по источнику или по результату
+	// ???? FV РїСЂРѕРІРµСЂСЏС‚СЊ РїРѕ РёСЃС‚РѕС‡РЅРёРєСѓ РёР»Рё РїРѕ СЂРµР·СѓР»СЊС‚Р°С‚Сѓ
 	FV = data == 0177;
 	data++;
 	SetDestData_byte( data );
@@ -1268,7 +1268,7 @@ void BKEmulCPU::BK_doDECB()
 {
 	Command_dest_Parser_byte();
 	BYTE data = GetDestData_byte();
-	// ???? FV проверять по источнику или по результату
+	// ???? FV РїСЂРѕРІРµСЂСЏС‚СЊ РїРѕ РёСЃС‚РѕС‡РЅРёРєСѓ РёР»Рё РїРѕ СЂРµР·СѓР»СЊС‚Р°С‚Сѓ
 	FV = data == 0200;
 	data--;
 	SetDestData_byte( data );
@@ -1285,7 +1285,7 @@ void BKEmulCPU::BK_doNEGB()
 	SetDestData_byte( data );
 	FN = Check_FN_byte( data );
 	FZ = Check_FZ_byte( data );
-	// ???? FV проверять по источнику или по результату
+	// ???? FV РїСЂРѕРІРµСЂСЏС‚СЊ РїРѕ РёСЃС‚РѕС‡РЅРёРєСѓ РёР»Рё РїРѕ СЂРµР·СѓР»СЊС‚Р°С‚Сѓ
 	FV = data == 0200;
 	FC = data != 0;
 }

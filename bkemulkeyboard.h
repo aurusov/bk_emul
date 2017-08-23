@@ -22,7 +22,7 @@ private:
 	bool KeyPressed;
 	bool StopPressed;
 
-	BYTE R_177716_byte_read; // Регист 0177716 - состояние клавиатуры.
+	BYTE R_177716_byte_read; // Р РµРіРёСЃС‚ 0177716 - СЃРѕСЃС‚РѕСЏРЅРёРµ РєР»Р°РІРёР°С‚СѓСЂС‹.
 
 	bool getBKScanCode( UINT PCKey, BYTE& BKScanCode );
 

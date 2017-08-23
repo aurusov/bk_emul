@@ -31,7 +31,7 @@ void BKEmulTimer::reset()
 	tick_count = 0;
 	tick_koef  = 1;
 	next20     = false;
-	emul.memory.set_word( 0177706, 0011000 ); // Начальные значения регистров системного таймера
+	emul.memory.set_word( 0177706, 0011000 ); // РќР°С‡Р°Р»СЊРЅС‹Рµ Р·РЅР°С‡РµРЅРёСЏ СЂРµРіРёСЃС‚СЂРѕРІ СЃРёСЃС‚РµРјРЅРѕРіРѕ С‚Р°Р№РјРµСЂР°
 	emul.memory.set_word( 0177710, 0177777 ); // ---- // ----
 	emul.memory.set_word( 0177712, 0177400 ); // ---- // ----
 }
@@ -107,6 +107,6 @@ void BKEmulTimer::set177712( BYTE value )
 
 void BKEmulTimer::set177713( BYTE value )
 {
-	// Запись в старший байт игнорируется
+	// Р—Р°РїРёСЃСЊ РІ СЃС‚Р°СЂС€РёР№ Р±Р°Р№С‚ РёРіРЅРѕСЂРёСЂСѓРµС‚СЃСЏ
 	emul.memory.set_byte( 0177713, 0xFF );
 }
